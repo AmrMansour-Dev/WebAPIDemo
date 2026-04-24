@@ -22,7 +22,7 @@ namespace WebAPIDemo.Controllers
             return Ok(employees);
         }
 
-        [HttpGet("{ID:int}")]
+        [HttpGet("{ID:int}",Name ="EmployeeDetailsRoute")]
         public IActionResult GetbyID(int ID) //ModelBinder (primitive : Route(Parameter or querystring) | Complex : request body
         {
             Employee emp = _dbContext.Employees.FirstOrDefault(e => e.ID == ID);
@@ -75,6 +75,25 @@ namespace WebAPIDemo.Controllers
             {
                 return BadRequest(ex);
             }
+        }
+
+        [HttpPost]
+        public IActionResult AddEmployee(Employee newemp)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbContext.Employees.Add(newemp);
+                _dbContext.SaveChanges();
+                string url = Url.Link("EmployeeDetailsRoute", new { ID = newemp.ID });
+
+              //(respone header location //response body
+                return Created(url, newemp);
+            }
+            else
+            {
+                return BadRequest(ModelState);
+            }
+
         }
     }
 }
