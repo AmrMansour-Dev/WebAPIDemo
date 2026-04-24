@@ -59,5 +59,22 @@ namespace WebAPIDemo.Controllers
 
             return BadRequest();
         }
+
+        [HttpDelete("{ID}")]
+        public IActionResult DeleteEmployee([FromRoute] int ID)
+        {
+            Employee emp = _dbContext.Employees.FirstOrDefault(e=>e.ID == ID);
+
+            try
+            {
+                _dbContext.Employees.Remove(emp);
+                _dbContext.SaveChanges();
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
+            catch(Exception ex) 
+            {
+                return BadRequest(ex);
+            }
+        }
     }
 }
