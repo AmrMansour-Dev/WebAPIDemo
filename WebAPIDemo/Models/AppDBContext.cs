@@ -8,7 +8,9 @@ namespace WebAPIDemo.Models
         {
             
         }
-        public DbSet<Employee> Employees { get; set; }  
+        public DbSet<Employee> Employees { get; set; }
+        public DbSet<Departement> Departement { get; set; }
+
 
     }
 }

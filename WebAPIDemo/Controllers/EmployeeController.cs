@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using WebAPIDemo.DTO;
 using WebAPIDemo.Models;
 
 namespace WebAPIDemo.Controllers
@@ -31,11 +33,32 @@ namespace WebAPIDemo.Controllers
         }
 
         [HttpGet("{Name:alpha}")]
-        public IActionResult GetbyName(string Name) //ModelBinder (primitive : Route(Parameter or querystring) | Complex : request body
+        public IActionResult GetbyName(string Name) 
         {
             Employee emp = _dbContext.Employees.FirstOrDefault(e => e.Name == Name);
 
             return Ok(emp);
+        }
+
+        [HttpGet("dept/{ID}")]
+        public IActionResult GetEmpwithDept(int ID)
+        {
+            Employee emp = _dbContext.Employees.Include(e=>e.Departement).FirstOrDefault(e => e.ID == ID);
+
+            return Ok(emp);
+        }
+
+        [HttpGet("dto/{ID}")]
+        public IActionResult GetEmpwithDept2(int ID)
+        {
+            Employee emp = _dbContext.Employees.Include(e => e.Departement).FirstOrDefault(e => e.ID == ID);
+
+            EmployeeNameWithDeptNameDTO obj = new EmployeeNameWithDeptNameDTO();
+            obj.EmpName = emp.Name;
+            obj.DeptName = emp.Departement.Name;
+            obj.ID = emp.ID;
+
+            return Ok(obj);
         }
 
         [HttpPut("{ID}")]
