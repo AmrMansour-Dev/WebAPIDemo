@@ -38,11 +38,26 @@ namespace WebAPIDemo.Controllers
             return Ok(emp);
         }
 
-        [HttpPost]
-        public IActionResult PostEmployee()
+        [HttpPut("{ID}")]
+        public IActionResult PutEmployee([FromRoute] int ID, [FromBody] Employee emp)
         {
+            if (ModelState.IsValid)
+            {
+                Employee oldemp = _dbContext.Employees.FirstOrDefault(e => e.ID == ID);
 
-            return Ok();
+                if (oldemp != null)
+                {
+                    oldemp.Name = emp.Name;
+                    oldemp.Address = emp.Address;
+                    oldemp.Salary = emp.Salary;
+                    oldemp.Age = emp.Age;
+                    _dbContext.SaveChanges();
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+
+            }
+
+            return BadRequest();
         }
     }
 }
