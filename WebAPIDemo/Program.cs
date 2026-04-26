@@ -28,6 +28,8 @@ Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseStaticFiles(); // html,images,static files
+
 
             app.UseAuthorization();
 
