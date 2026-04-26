@@ -20,6 +20,13 @@ Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+            builder.Services.AddCors(CorsOptions => { 
+                CorsOptions.AddPolicy("MyPolicy", CorsPolicyBuilder =>
+            {
+                CorsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader();
+                });
+            }); 
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -30,6 +37,7 @@ Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectio
             }
             app.UseStaticFiles(); // html,images,static files
 
+            app.UseCors("MyPolicy"); // policy for block or open for domains
 
             app.UseAuthorization();
 
