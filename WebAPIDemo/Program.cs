@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using WebAPIDemo.Models;
 
@@ -16,6 +17,9 @@ namespace WebAPIDemo
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddDbContext<AppDBContext>(Options =>
 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); //Here We Injected Options to pass it to DbContext
+
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AppDBContext>().AddDefaultTokenProviders();
+
 
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
